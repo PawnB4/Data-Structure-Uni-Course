@@ -1,5 +1,5 @@
 import random
-# listas 
+# listas
 
 cantidad = []
 naranjas = []
@@ -73,6 +73,7 @@ def extraerResto():
             listaCamionesCompletos.append(camion/1000)
         else:
             listaSobrante.append(camion/1000)
+            
     return listaCamionesCompletos, listaSobrante
 
 # introduce 100 naranjas por cajon y suma los pesos
@@ -82,11 +83,13 @@ def calcularCajones():
     naranjas.sort(reverse=True)
     n = 100
     matrizCajones = [naranjas[i:i + n] for i in range(0, len(naranjas), n)]
+    # print(matrizCajones)
     for cajon in matrizCajones:  # Acceso a cada cajon
         suma = 0
         for naranja in cajon:  # Acceso las naranjas de cada cajon
             suma = (suma + naranja)
         listaCajones.append(suma)
+        
     return listaCajones
 
 
@@ -95,12 +98,13 @@ def main():
     contarNaranja()
     cajones = len(calcularCajones())
     calcularCamiones()
-    camiones, sobrante = extraerResto()
-    
+    extraerResto()
+    listaCamionesCompletos.sort(reverse=True)
+
     print(
-        f'Naranjas para jugo: {len(jugo)}\nNarajas para exportar: {len(jugo)}\nPeso total de naranjas a exportar: {sum(naranjas)/1000}kg')
+        f'Naranjas para jugo: {len(jugo)}\nNarajas para exportar: {len(naranjas)}\nPeso total de naranjas a exportar: {sum(naranjas)/1000}kg')
     print(
-        f'Cantidad total de cajones: {cajones}\nCantidad de camiones: {len(listaCamionesCompletos)}\nPesos de cada camión: {camiones}\nSobrante para la próxima cosecha: {sobrante}')
+        f'Cantidad total de cajones: {cajones}\nCantidad de camiones: {len(listaCamionesCompletos)}\nPesos de cada camión: {listaCamionesCompletos}\nSobrante para la próxima cosecha: {listaSobrante}')
 
 
 if __name__ == "__main__":
