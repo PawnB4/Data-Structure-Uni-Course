@@ -1,6 +1,8 @@
-import random
-# listas
+# Bautista Novarese, Tomás Bond, Franco Pascual, Ivan Faifer, Julian Contreras -- UADE // Agoritmos & Estructura de Datos - Viernes / Mañana
 
+import random
+
+#Variables
 cantidad = []
 naranjas = []
 jugo = []
@@ -10,9 +12,8 @@ sumatoria = []
 listaCamionesCompletos = []
 listaSobrante = []
 
-# chequea que el ingreso hecho por teclado sea un entero
 
-
+# Funcion encargada de verificar el que el tipo de dato sea int.
 def check_input(entrada):
     try:
         int(entrada)
@@ -23,7 +24,6 @@ def check_input(entrada):
             return False
         except ValueError:
             return False
-
 
 def ingresarCantidad():
     bandera = True
@@ -38,8 +38,6 @@ def ingresarCantidad():
             print("Por favor, ingrese un valor válido.")
     return cantidad
 
-# envia las naranjas dentro del peso precisado a una lista, y las que estan fuera de rango a otra
-
 
 def contarNaranja():
     for i in cantidad:
@@ -50,23 +48,35 @@ def contarNaranja():
             jugo.append(aux)
     return naranjas, jugo
 
-# se calcula la cantidad de cajones que se pueden meter lo mas optimo en un camion de 500kg
+
+# Funcion encargada de calcular la cantidad de cajones. Retorna una lista con los pesos de cada cajon.
+def calcularCajones():
+    naranjas.sort(reverse=True)
+    n = 100
+    matrizCajones = [naranjas[i:i + n] for i in range(0, len(naranjas), n)]
+    for cajon in matrizCajones:  # Acceso a cada cajon
+        suma = 0
+        for naranja in cajon:  # Acceso las naranjas de cada cajon
+            suma = (suma + naranja)
+        listaCajones.append(suma)
+        
+    return listaCajones
 
 
+# Funcion encargada de introducir cajones a los camiones. Se intenta llegar lo mas cerca a 500kg.
 def calcularCamiones():
     while sum(listaCajones) != 0:
         suma = 0
         for cajon in listaCajones:
             if 500000-cajon >= suma:
                 suma = suma + cajon
-                listaCajones[listaCajones.index(cajon)] = 0
+                listaCajones[listaCajones.index(cajon)] = 0 # ==> Por cajon agregado se "borra" de la lista de cajones. 
         listaCamiones.append(suma)
 
     return listaCamiones
 
-# recorre la lista de camiones y agrega a segun que lista dependiendo si cuenta con mas del 80% del peso o no
 
-
+# Funcion encargada de verificar que los camiones sean superiores a 400kg (80% capacidad).
 def extraerResto():
     for camion in listaCamiones:
         if camion >= 400000:
@@ -75,22 +85,6 @@ def extraerResto():
             listaSobrante.append(camion/1000)
             
     return listaCamionesCompletos, listaSobrante
-
-# introduce 100 naranjas por cajon y suma los pesos
-
-
-def calcularCajones():
-    naranjas.sort(reverse=True)
-    n = 100
-    matrizCajones = [naranjas[i:i + n] for i in range(0, len(naranjas), n)]
-    # print(matrizCajones)
-    for cajon in matrizCajones:  # Acceso a cada cajon
-        suma = 0
-        for naranja in cajon:  # Acceso las naranjas de cada cajon
-            suma = (suma + naranja)
-        listaCajones.append(suma)
-        
-    return listaCajones
 
 
 def main():
