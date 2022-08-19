@@ -1,26 +1,16 @@
-# Resolver el siguiente problema diseñando y utilizando funciones:
-
-# La empresa cuenta con N camiones, y
-# cada  uno  puede  transportar  hasta  media  tonelada  (500  kilogramos).
-# En  un  cajón caben 100 naranjas con un peso entre 200 y 300 gramos cada una.
-# Si el peso de alguna naranja se encuentra fuera del rango indicado, se clasifica para procesar como jugo.
-# Se solicita desarrollar un programa para ingresar la cantidad de naranjas cosechadas e informar cuántos cajones se pueden llenar,
-# cuántas naranjas son para jugo y si hay algún sobrante de naranjas que deba considerarse para el siguiente reparto.
-# Simular el peso de cada unidad generando un número entero al azar entre 150 y 350.Además,
-# se  desea  saber  cuántos  camiones  se  necesitan  para  transportar  la  cosecha,  considerando
-# que  la  ocupación  del  camión  no  debe  ser  inferior  al  80%;  en caso contrario el camión no serán despachado por su alto costo.
-
-# _______________________________________________________________________________________________________________________________________________
-# cada camion: minimo 400kg max 500kg
-# cajon: maximo 100 naranjas.
-# naranjas: peso entre 200 y 300 / Peso fuera de rango => naranja para jugo
-# _______________________________________________________________________________________________________________________________________________
-
 import random
+# listas 
 
 cantidad = []
 naranjas = []
 jugo = []
+listaCajones = []
+listaCamiones = []
+sumatoria = []
+listaCamionesCompletos = []
+listaSobrante = []
+
+# chequea que el ingreso hecho por teclado sea un entero
 
 
 def check_input(entrada):
@@ -48,6 +38,8 @@ def ingresarCantidad():
             print("Por favor, ingrese un valor válido.")
     return cantidad
 
+# envia las naranjas dentro del peso precisado a una lista, y las que estan fuera de rango a otra
+
 
 def contarNaranja():
     for i in cantidad:
@@ -58,41 +50,57 @@ def contarNaranja():
             jugo.append(aux)
     return naranjas, jugo
 
+# se calcula la cantidad de cajones que se pueden meter lo mas optimo en un camion de 500kg
+
 
 def calcularCamiones():
-    pesoTotal = sum(naranjas)/1000
-    camiones = pesoTotal//500
-    sobrante = pesoTotal % 500
-    if sobrante > 480:
-        camiones = camiones + 1
+    while sum(listaCajones) != 0:
+        suma = 0
+        for cajon in listaCajones:
+            if 500000-cajon >= suma:
+                suma = suma + cajon
+                listaCajones[listaCajones.index(cajon)] = 0
+        listaCamiones.append(suma)
 
-    return camiones
+    return listaCamiones
+
+# recorre la lista de camiones y agrega a segun que lista dependiendo si cuenta con mas del 80% del peso o no
+
+
+def extraerResto():
+    for camion in listaCamiones:
+        if camion >= 400000:
+            listaCamionesCompletos.append(camion/1000)
+        else:
+            listaSobrante.append(camion/1000)
+    return listaCamionesCompletos, listaSobrante
+
+# introduce 100 naranjas por cajon y suma los pesos
 
 
 def calcularCajones():
-    cajones = 0
+    naranjas.sort(reverse=True)
     n = 100
-    output = [naranjas[i:i + n] for i in range(0, len(naranjas), n)]
-    print(output)
-    cajones = 0
-    for i in output:
-        cajones = cajones + 1
-    print(f'Cantidad de cajones: {cajones}')
-
-    # if camionesTotales > 0:
-    #     print(f'Cantidad cajones de 100 narnjas: {cajones}')
-    #     print(f'Cantidad de naranjas en cajon sobrante: {sobrante}')
+    matrizCajones = [naranjas[i:i + n] for i in range(0, len(naranjas), n)]
+    for cajon in matrizCajones:  # Acceso a cada cajon
+        suma = 0
+        for naranja in cajon:  # Acceso las naranjas de cada cajon
+            suma = (suma + naranja)
+        listaCajones.append(suma)
+    return listaCajones
 
 
 def main():
     ingresarCantidad()
     contarNaranja()
-    print(f'Naranjas para jugo: {len(jugo)}')
-    print(f'Naranjas para exportar: {len(naranjas)}')
-    print(f'Peso total de narnjas a exportar: {sum(naranjas)/1000}kg')
-    totalCamiones = calcularCamiones()
-    print(f'Cantidad de camiones: {totalCamiones}')
-    calcularCajones()
+    cajones = len(calcularCajones())
+    calcularCamiones()
+    camiones, sobrante = extraerResto()
+    
+    print(
+        f'Naranjas para jugo: {len(jugo)}\nNarajas para exportar: {len(jugo)}\nPeso total de naranjas a exportar: {sum(naranjas)/1000}kg')
+    print(
+        f'Cantidad total de cajones: {cajones}\nCantidad de camiones: {len(listaCamionesCompletos)}\nPesos de cada camión: {camiones}\nSobrante para la próxima cosecha: {sobrante}')
 
 
 if __name__ == "__main__":
