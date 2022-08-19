@@ -21,7 +21,6 @@ import random
 cantidad = []
 naranjas = []
 jugo = []
-cajones = []
 
 
 def check_input(entrada):
@@ -34,6 +33,7 @@ def check_input(entrada):
             return False
         except ValueError:
             return False
+
 
 def ingresarCantidad():
     bandera = True
@@ -51,7 +51,6 @@ def ingresarCantidad():
 
 def contarNaranja():
     for i in cantidad:
-        # print(cantidad.index(i))
         aux = i
         if 200 <= aux <= 300:
             naranjas.append(aux)
@@ -60,40 +59,41 @@ def contarNaranja():
     return naranjas, jugo
 
 
-def cajonesNaranja():
-    naranjas.sort(reverse=True)
-    # print(naranjas)
-    # print(split(range(len(naranjas)), 100))
+def calcularCamiones():
+    pesoTotal = sum(naranjas)/1000
+    camiones = pesoTotal//500
+    sobrante = pesoTotal % 500
+    if sobrante > 480:
+        camiones = camiones + 1
+
+    return camiones
+
+
+def calcularCajones():
+    cajones = 0
     n = 100
     output = [naranjas[i:i + n] for i in range(0, len(naranjas), n)]
     print(output)
+    cajones = 0
+    for i in output:
+        cajones = cajones + 1
+    print(f'Cantidad de cajones: {cajones}')
 
-    # for i in range(len(naranjas)):
-
-
-    sumatoria = 0
-    while True:
-        for i in range(len(naranjas)):
-            sumatoria += naranjas[i]
-            
-        cajones.append(sumatoria/1000)
-        print()
-
-    # return cajones
+    # if camionesTotales > 0:
+    #     print(f'Cantidad cajones de 100 narnjas: {cajones}')
+    #     print(f'Cantidad de naranjas en cajon sobrante: {sobrante}')
 
 
 def main():
     ingresarCantidad()
     contarNaranja()
-    print("Naranjas para jugo: ", len(jugo))
-    print("Naranjas para exportar: ", len(naranjas))
-    print("Peso total kg narnjas exportar: ", sum(naranjas)/1000)
-    cajonesNaranja()
-    print(cajones)
-    print(sum(cajones))
+    print(f'Naranjas para jugo: {len(jugo)}')
+    print(f'Naranjas para exportar: {len(naranjas)}')
+    print(f'Peso total de narnjas a exportar: {sum(naranjas)/1000}kg')
+    totalCamiones = calcularCamiones()
+    print(f'Cantidad de camiones: {totalCamiones}')
+    calcularCajones()
 
 
 if __name__ == "__main__":
     main()
-
-

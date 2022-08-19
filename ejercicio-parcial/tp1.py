@@ -10,7 +10,6 @@ def check_input(entrada):
         except ValueError:
             return False
 
-
 def carga_categoria(lista_cat):
     print("\n--- Carga de Vehículo --- \n")
     categoria_letra = input("Ingrese categoría: ")
@@ -23,7 +22,6 @@ def carga_categoria(lista_cat):
             lista_cat.append(categoria_letra)
     else:
         bandera.append("F")
-
 
 def carga_registro(list_reg):
     numeroReg = input("Ingrese un numero de registro: ")
@@ -40,7 +38,6 @@ def carga_registro(list_reg):
         else:
             numeroReg = input(("Ingrese un numero: "))
 
-
 def carga_anio(lista_year):
     numeroAnio = input(
         "Ingrese el año de fabricación del vehículo (1975 a 1990): ")
@@ -56,7 +53,6 @@ def carga_anio(lista_year):
                     ("Ingrese un año desde 1975 a 1990: "))
         else:
             numeroAnio = input(("Ingrese un año: "))
-
 
 def ordenarBurbuja(categorias, registros, anios, pago):
     for i in range(0, len(categorias)-1):
